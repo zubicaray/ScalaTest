@@ -7,11 +7,13 @@ object LogParser extends App {
    val tailleTuile    = 9
    
    
-   def estTuile(list:List[String]):Boolean = list match {
+   def isTile(list:List[String]):Boolean = list match {
      case _::"map"::"1.0"::"slab"::_  => true
      case _ => false
    }
- 
+   def printOut(currentViewmode:String,cpt:Int,zoomSet:Set[String])={
+     printf("%s\t%d\t%s\n",currentViewmode,cpt,zoomSet.mkString(","))
+   }
      
    var line:String  = ""
    var cpt:Int      =0;
@@ -21,13 +23,13 @@ object LogParser extends App {
    while ({line = StdIn.readLine(); line != null}) {
         var array:Array[String]=line.split("/")     
 
-        if ( array.size == tailleTuile && estTuile(array.toList)){         
+        if ( array.size == tailleTuile && isTile(array.toList)){         
           
           if( currentViewmode=="") currentViewmode=array(viewmode)
           
           if( currentViewmode != array(viewmode) ){
             
-            printf("%s\t%d\t%s\n",currentViewmode,cpt,zoomSet.mkString(","))
+            printOut(currentViewmode,cpt,zoomSet)
             currentViewmode=array(viewmode)
             zoomSet=zoomSet.empty
             zoomSet+=array(zoom)
@@ -43,7 +45,7 @@ object LogParser extends App {
         }
    }
    if(cpt>0){
-     printf("%s\t%d\t%s\n",currentViewmode,cpt,zoomSet.mkString(","))
+     printOut(currentViewmode,cpt,zoomSet)
    }
        
   
